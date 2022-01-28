@@ -1,36 +1,7 @@
 import { Box, Button, Text, TextField, Image } from '@skynexui/components'
 import appConfig from '../config.json'
-
-function GlobalStyle() {
-  return (
-    <style global jsx>{`
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        list-style: none;
-      }
-      body {
-        font-family: 'Open Sans', sans-serif;
-      }
-      /* App fit Height */
-      html,
-      body,
-      #__next {
-        min-height: 100vh;
-        display: flex;
-        flex: 1;
-      }
-      #__next {
-        flex: 1;
-      }
-      #__next > * {
-        flex: 1;
-      }
-      /* ./App fit Height */
-    `}</style>
-  )
-}
+import React from 'react'
+import { useRouter } from 'next/router'
 
 function Title(props) {
   const Tag = props.tag || 'h1'
@@ -63,11 +34,12 @@ function Title(props) {
 //export default HomePage
 
 export default function PaginaInicial() {
-  const username = 'peas'
+  //const username = 'peas'
+  const [username, setUserName] = React.useState('peas')
+  const roteamento = useRouter()
 
   return (
     <>
-      <GlobalStyle />
       <Box
         styleSheet={{
           display: 'flex',
@@ -102,6 +74,11 @@ export default function PaginaInicial() {
           {/* Formulário */}
           <Box
             as="form"
+            onSubmit={function (InfosDoEvento) {
+              InfosDoEvento.preventDefault()
+              roteamento.push('/chat')
+              //window.location.href = '/chat'
+            }}
             styleSheet={{
               display: 'flex',
               flexDirection: 'column',
@@ -123,17 +100,41 @@ export default function PaginaInicial() {
               {appConfig.name}
             </Text>
 
-            <TextField
-              fullWidth
-              textFieldColors={{
-                neutral: {
-                  textColor: appConfig.theme.colors.neutrals[200],
-                  mainColor: appConfig.theme.colors.neutrals[900],
-                  mainColorHighlight: appConfig.theme.colors.primary[500],
-                  backgroundColor: appConfig.theme.colors.neutrals[800]
-                }
+            {/*<input
+              type="text"
+              value={username}
+              onChange={function handler(event) {
+                console.log('usuario digitou', event.target.value)
+                //Onde está o valor?
+                const valor = event.target.value
+                //Trocando o valor da variável
+                //Através do React
+                setUserName(valor)
               }}
-            />
+            />*/}
+
+            {
+              <TextField
+                value={username}
+                onChange={function handler(event) {
+                  console.log('usuario digitou', event.target.value)
+                  //Onde está o valor?
+                  const valor = event.target.value
+                  //Trocando o valor da variável
+                  //Através do React
+                  setUserName(valor)
+                }}
+                fullWidth
+                textFieldColors={{
+                  neutral: {
+                    textColor: appConfig.theme.colors.neutrals[200],
+                    mainColor: appConfig.theme.colors.neutrals[900],
+                    mainColorHighlight: appConfig.theme.colors.primary[500],
+                    backgroundColor: appConfig.theme.colors.neutrals[800]
+                  }
+                }}
+              />
+            }
             <Button
               type="submit"
               label="Entrar"
