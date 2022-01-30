@@ -165,13 +165,15 @@ export default function PaginaInicial() {
               minHeight: '240px'
             }}
           >
-            <Image
-              styleSheet={{
-                borderRadius: '50%',
-                marginBottom: '16px'
-              }}
-              src={`https://github.com/${username}.png`}
-            />
+            {username.length >= 2 && (
+              <Image
+                styleSheet={{
+                  borderRadius: '50%',
+                  marginBottom: '16px'
+                }}
+                src={`https://github.com/${username}.png`}
+              />
+            )}
             <Text
               variant="body4"
               styleSheet={{
