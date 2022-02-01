@@ -1,20 +1,30 @@
 import { Box, Text, TextField, Image, Button } from '@skynexui/components'
 import React from 'react'
-import { useState } from 'react'
 import appConfig from '../config.json'
 
 export default function ChatPage() {
-  // Sua lógica vai aqui
-  const [mensagem, setMensagem] = useState('')
-  const [listaMensagens, setListaMensagens] = useState([])
-  // ./Sua lógica vai aqui
+  const [mensagem, setMensagem] = React.useState('')
+  const [listaDeMensagens, setListaDeMensagens] = React.useState([])
+
+  /*
+    // Usuário
+    - Usuário digita no campo textarea
+    - Aperta enter para enviar
+    - Tem que adicionar o texto na listagem
+    
+    // Dev
+    - [X] Campo criado
+    - [X] Vamos usar o onChange usa o useState (ter if pra caso seja enter pra limpar a variavel)
+    - [X] Lista de mensagens 
+    */
   function handleNovaMensagem(novaMensagem) {
-    const _mensagem = {
-      id: listaMensagens.length + 1,
+    const mensagem = {
+      id: listaDeMensagens.length + 1,
       de: 'vanessametonini',
       texto: novaMensagem
     }
-    setListaMensagens([_mensagem, ...listaMensagens])
+
+    setListaDeMensagens([mensagem, ...listaDeMensagens])
     setMensagem('')
   }
 
@@ -59,16 +69,14 @@ export default function ChatPage() {
             padding: '16px'
           }}
         >
-          {<MessageList mensagens={listaMensagens} />}
-
-          {/*listaMensagens.map(mensagemAtual => {
-            return (
-              <li key={mensagemAtual.id}>
-                {mensagemAtual.de}: {mensagemAtual.texto}
-              </li>
-            )
-          })*/}
-
+          <MessageList mensagens={listaDeMensagens} />
+          {/* {listaDeMensagens.map((mensagemAtual) => {
+                        return (
+                            <li key={mensagemAtual.id}>
+                                {mensagemAtual.de}: {mensagemAtual.texto}
+                            </li>
+                        )
+                    })} */}
           <Box
             as="form"
             styleSheet={{
@@ -90,14 +98,13 @@ export default function ChatPage() {
               }}
               placeholder="Insira sua mensagem aqui..."
               type="textarea"
-              style={{
+              styleSheet={{
                 width: '100%',
                 border: '0',
                 resize: 'none',
                 borderRadius: '5px',
                 padding: '6px 8px',
                 backgroundColor: appConfig.theme.colors.neutrals[800],
-                marginTop: '10px',
                 marginRight: '12px',
                 color: appConfig.theme.colors.neutrals[200]
               }}
@@ -139,14 +146,15 @@ function MessageList(props) {
     <Box
       tag="ul"
       styleSheet={{
-        overflow: 'scroll',
+        overflow: 'auto',
         display: 'flex',
         flexDirection: 'column-reverse',
         flex: 1,
         color: appConfig.theme.colors.neutrals['000'],
         marginBottom: '16px'
       }}
-      {...props.mensagens.map(() => {
+    >
+      {props.mensagens.map(mensagem => {
         return (
           <Text
             key={mensagem.id}
@@ -175,7 +183,7 @@ function MessageList(props) {
                 }}
                 src={`https://github.com/vanessametonini.png`}
               />
-              <Text tag="strong">{listaMensagens[0].de}</Text>
+              <Text tag="strong">{mensagem.de}</Text>
               <Text
                 styleSheet={{
                   fontSize: '10px',
@@ -191,6 +199,6 @@ function MessageList(props) {
           </Text>
         )
       })}
-    ></Box>
+    </Box>
   )
 }
